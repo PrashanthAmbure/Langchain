@@ -8,3 +8,7 @@ search_tool = DuckDuckGoSearchRun()
 result = search_tool.invoke('latest sensex points in india')
 
 print(f"Result: {result}")
+
+print(search_tool.name)
+print(search_tool.description)
+print(search_tool.args)
