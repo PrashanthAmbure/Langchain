@@ -68,7 +68,8 @@ prompt = PromptTemplate(
 
 
 # question          = "Is the topic of Christopher discussed in this video? If yes then what was discussed"
-question          = "Is the name Christopher used in this video? If yes then what was discussed"
+# question          = "Is the name Christopher used in this video? If yes then what was discussed"
+question          = "Can you please summarize what the user is talking in the video?"
 retrieved_docs    = retriever.invoke(question)
 
 print('-'*100)
@@ -82,3 +83,23 @@ answer = llm.invoke(final_prompt)
 print('*'*100)
 print(answer.content)
 
+# Building a chain
+from langchain_core.runnables import RunnableParallel, RunnablePassthrough, RunnableLambda
+from langchain_core.output_parsers import StrOutputParser
+
+def format_docs(retrieved_docs):
+  context_text = "\n\n".join(doc.page_content for doc in retrieved_docs)
+  return context_text
+
+parallel_chain = RunnableParallel({
+    'context': retriever | RunnableLambda(format_docs),
+    'question': RunnablePassthrough()
+})
+
+parallel_chain.invoke('What is docker compose?')
+
+parser = StrOutputParser()
+
+main_chain = parallel_chain | prompt | llm | parser
+
+print(main_chain.invoke('Can you summarize the video'))
