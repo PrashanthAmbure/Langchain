@@ -1,0 +1,16 @@
+{
+    "name": null,
+    "input_variables": [
+        "lines",
+        "topic"
+    ],
+    "optional_variables": [],
+    "output_parser": null,
+    "partial_variables": {},
+    "metadata": null,
+    "tags": null,
+    "template": "\n    Explain in {lines} lines about {topic}\n    ",
+    "template_format": "f-string",
+    "validate_template": true,
+    "_type": "prompt"
+}
