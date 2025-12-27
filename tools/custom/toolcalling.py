@@ -1,6 +1,6 @@
 from langchain_core.tools import tool
 from langchain_ollama import ChatOllama
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import HumanMessage
 
 @tool
 def multiply(a: int, b:int) -> int:
@@ -15,7 +15,6 @@ print(multiply.args)
 
 # tool binding
 model = ChatOllama(model='llama3.1')
-
 llm_with_tools = model.bind_tools([multiply])
 print('-'*100)
 print(llm_with_tools)
@@ -26,6 +25,8 @@ print(result)
 print(result.tool_calls)
 print(result.tool_calls[0])
 
+# Here it will not call the tool,it will just suggest which tool to use.
+# It is up to the user to invoke the tool with the appropriate args.
 print(multiply.invoke(result.tool_calls[0]['args']))
 
 print(multiply.invoke(result.tool_calls[0]))
